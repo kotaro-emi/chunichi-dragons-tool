@@ -199,7 +199,7 @@
 
 <main>
   <div class="meta-bar">
-    <div>最終更新: <strong id="updated-at">2026-07-27 (JST) 手動初期登録</strong></div>
+    <div>最終更新: <strong id="updated-at">2026-07-27 (JST) 手動更新・登録選手全員反映</strong></div>
     <div><span class="badge" id="season-badge">2026年度 セ・リーグ公式戦</span></div>
   </div>
 
@@ -236,7 +236,7 @@
   <div class="note">
     <strong>このページについて</strong><br>
     データ出典: <a href="https://npb.jp/bis/2026/stats/idb1_d.html" target="_blank" rel="noopener">NPB.jp 日本野球機構 — 中日ドラゴンズ個人打撃成績</a><br>
-    毎試合終了後、スケジュール実行されるエージェントが最新の成績を取得し、このページを自動更新します。列見出しをクリックすると並べ替えできます。
+    一軍登録・出場実績のある選手を全員掲載しています（投手の代打成績や、出場のみで打席のない選手を含む）。毎試合終了後、スケジュール実行されるエージェントが最新の成績を取得し、このページを自動更新します。列見出しをクリックすると並べ替えできます。
   </div>
 </main>
 
@@ -245,21 +245,66 @@
 </footer>
 
 <script>
-  // データ本体: 自動更新エージェントがこの配列を書き換える
+  // データ本体: 自動更新エージェントがこの配列を書き換える(登録選手全員。投手・出場のみで打席のない選手を含む)
   const PLAYERS = [
-    {name:"細川成也", g:94, pa:395, ab:323, r:46, h:72, double:11, triple:1, hr:15, tb:130, rbi:47, sb:0, bb:63, hbp:6, so:105, gdp:7, avg:.223, slg:.402, obp:.357},
-    {name:"村松開人", g:91, pa:378, ab:312, r:40, h:77, double:11, triple:5, hr:5, tb:113, rbi:34, sb:4, bb:51, hbp:3, so:66, gdp:9, avg:.247, slg:.362, obp:.353},
-    {name:"石川昂弥", g:56, pa:203, ab:184, r:20, h:49, double:12, triple:0, hr:7, tb:82, rbi:29, sb:0, bb:18, hbp:1, so:48, gdp:4, avg:.266, slg:.446, obp:.335},
-    {name:"岡林勇希", g:46, pa:203, ab:180, r:13, h:43, double:8, triple:0, hr:1, tb:54, rbi:13, sb:1, bb:15, hbp:2, so:23, gdp:1, avg:.239, slg:.300, obp:.299},
-    {name:"石伊雄太", g:69, pa:249, ab:230, r:21, h:59, double:12, triple:1, hr:6, tb:91, rbi:21, sb:0, bb:9, hbp:5, so:61, gdp:3, avg:.257, slg:.396, obp:.297},
-    {name:"田中幹也", g:73, pa:247, ab:213, r:24, h:50, double:9, triple:1, hr:0, tb:61, rbi:11, sb:8, bb:17, hbp:3, so:25, gdp:2, avg:.235, slg:.286, obp:.298},
-    {name:"福永裕基", g:65, pa:223, ab:198, r:20, h:51, double:6, triple:0, hr:2, tb:63, rbi:13, sb:8, bb:22, hbp:3, so:43, gdp:3, avg:.258, slg:.318, obp:.341},
-    {name:"サノー", g:50, pa:186, ab:160, r:19, h:37, double:4, triple:0, hr:13, tb:80, rbi:25, sb:0, bb:22, hbp:2, so:52, gdp:3, avg:.231, slg:.500, obp:.328},
-    {name:"ボスラー", g:61, pa:215, ab:198, r:11, h:38, double:5, triple:1, hr:5, tb:60, rbi:16, sb:0, bb:12, hbp:3, so:62, gdp:2, avg:.192, slg:.303, obp:.247},
-    {name:"鵜飼航丞", g:49, pa:164, ab:155, r:16, h:38, double:6, triple:0, hr:5, tb:59, rbi:22, sb:1, bb:7, hbp:2, so:46, gdp:5, avg:.245, slg:.381, obp:.287},
-    {name:"板山祐太郎", g:62, pa:166, ab:149, r:20, h:37, double:7, triple:2, hr:6, tb:66, rbi:23, sb:1, bb:15, hbp:1, so:39, gdp:4, avg:.248, slg:.443, obp:.319},
+    {name:"アブレウ", g:10, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
     {name:"阿部寿樹", g:52, pa:108, ab:90, r:11, h:25, double:5, triple:0, hr:3, tb:39, rbi:19, sb:0, bb:15, hbp:1, so:27, gdp:4, avg:.278, slg:.433, obp:.383},
+    {name:"石伊雄太", g:69, pa:249, ab:230, r:21, h:59, double:12, triple:1, hr:6, tb:91, rbi:21, sb:0, bb:9, hbp:5, so:61, gdp:3, avg:.257, slg:.396, obp:.297},
+    {name:"石川昂弥", g:56, pa:203, ab:184, r:20, h:49, double:12, triple:0, hr:7, tb:82, rbi:29, sb:0, bb:18, hbp:1, so:48, gdp:4, avg:.266, slg:.446, obp:.335},
+    {name:"石橋康太", g:4, pa:3, ab:3, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:2, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"板山祐太郎", g:62, pa:166, ab:149, r:20, h:37, double:7, triple:2, hr:6, tb:66, rbi:23, sb:1, bb:15, hbp:1, so:39, gdp:4, avg:.248, slg:.443, obp:.319},
+    {name:"伊藤茉央", g:16, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"鵜飼航丞", g:49, pa:164, ab:155, r:16, h:38, double:6, triple:0, hr:5, tb:59, rbi:22, sb:1, bb:7, hbp:2, so:46, gdp:5, avg:.245, slg:.381, obp:.287},
+    {name:"梅野雄吾", g:2, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"大島洋平", g:21, pa:66, ab:62, r:4, h:12, double:1, triple:1, hr:0, tb:15, rbi:2, sb:1, bb:4, hbp:0, so:13, gdp:1, avg:.194, slg:.242, obp:.242},
+    {name:"大野雄大", g:14, pa:31, ab:24, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:1, hbp:0, so:16, gdp:1, avg:.000, slg:.000, obp:.040},
+    {name:"岡林勇希", g:46, pa:203, ab:180, r:13, h:43, double:8, triple:0, hr:1, tb:54, rbi:13, sb:1, bb:15, hbp:2, so:23, gdp:1, avg:.239, slg:.300, obp:.299},
+    {name:"尾田剛樹", g:32, pa:10, ab:8, r:7, h:1, double:0, triple:0, hr:0, tb:1, rbi:0, sb:4, bb:1, hbp:0, so:5, gdp:0, avg:.125, slg:.125, obp:.222},
+    {name:"カリステ", g:26, pa:67, ab:61, r:7, h:12, double:2, triple:0, hr:1, tb:17, rbi:3, sb:1, bb:6, hbp:0, so:20, gdp:2, avg:.197, slg:.279, obp:.269},
+    {name:"勝野昌慶", g:7, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"加藤匠馬", g:23, pa:50, ab:44, r:2, h:6, double:1, triple:0, hr:0, tb:7, rbi:1, sb:1, bb:4, hbp:0, so:14, gdp:0, avg:.136, slg:.159, obp:.208},
+    {name:"金丸夢斗", g:17, pa:35, ab:34, r:0, h:2, double:0, triple:0, hr:0, tb:2, rbi:0, sb:0, bb:0, hbp:0, so:16, gdp:1, avg:.059, slg:.059, obp:.059},
+    {name:"川越誠司", g:4, pa:4, ab:4, r:0, h:2, double:2, triple:0, hr:0, tb:4, rbi:1, sb:0, bb:0, hbp:0, so:1, gdp:0, avg:.500, slg:1.000, obp:.500},
+    {name:"木下拓哉", g:21, pa:63, ab:61, r:5, h:17, double:3, triple:0, hr:0, tb:20, rbi:3, sb:0, bb:1, hbp:1, so:12, gdp:0, avg:.279, slg:.328, obp:.302},
+    {name:"草加勝", g:12, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"近藤廉", g:3, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"サノー", g:50, pa:186, ab:160, r:19, h:37, double:4, triple:0, hr:13, tb:80, rbi:25, sb:0, bb:22, hbp:2, so:52, gdp:3, avg:.231, slg:.500, obp:.328},
+    {name:"齋藤綱記", g:37, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"櫻井頼之介", g:10, pa:13, ab:11, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:1, hbp:0, so:8, gdp:0, avg:.000, slg:.000, obp:.083},
+    {name:"篠﨑国忠", g:3, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"清水達也", g:6, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"杉浦稔大", g:11, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
     {name:"高橋周平", g:45, pa:99, ab:86, r:7, h:23, double:2, triple:0, hr:0, tb:25, rbi:5, sb:0, bb:11, hbp:1, so:28, gdp:2, avg:.267, slg:.291, obp:.357},
+    {name:"髙橋宏斗", g:10, pa:19, ab:16, r:0, h:4, double:0, triple:0, hr:0, tb:4, rbi:2, sb:0, bb:1, hbp:0, so:6, gdp:0, avg:.250, slg:.250, obp:.294},
+    {name:"田中幹也", g:73, pa:247, ab:213, r:24, h:50, double:9, triple:1, hr:0, tb:61, rbi:11, sb:8, bb:17, hbp:3, so:25, gdp:2, avg:.235, slg:.286, obp:.298},
+    {name:"知野直人", g:6, pa:3, ab:3, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:2, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"辻本倫太郎", g:14, pa:17, ab:16, r:1, h:3, double:0, triple:1, hr:0, tb:5, rbi:0, sb:0, bb:0, hbp:0, so:3, gdp:0, avg:.188, slg:.313, obp:.188},
+    {name:"土田龍空", g:33, pa:42, ab:38, r:5, h:6, double:0, triple:0, hr:2, tb:12, rbi:4, sb:0, bb:3, hbp:1, so:11, gdp:0, avg:.158, slg:.316, obp:.238},
+    {name:"仲地礼亜", g:4, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"中西聖輝", g:7, pa:13, ab:12, r:0, h:1, double:1, triple:0, hr:0, tb:2, rbi:0, sb:0, bb:0, hbp:0, so:7, gdp:0, avg:.083, slg:.167, obp:.083},
+    {name:"根尾昂", g:9, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"橋本侑樹", g:25, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"花田旭", g:19, pa:56, ab:53, r:5, h:12, double:3, triple:0, hr:1, tb:18, rbi:5, sb:0, bb:2, hbp:0, so:18, gdp:1, avg:.226, slg:.340, obp:.250},
+    {name:"樋口正修", g:7, pa:3, ab:3, r:5, h:1, double:0, triple:0, hr:0, tb:1, rbi:0, sb:3, bb:0, hbp:0, so:1, gdp:0, avg:.333, slg:.333, obp:.333},
+    {name:"ブライト健太", g:5, pa:15, ab:14, r:0, h:1, double:0, triple:0, hr:0, tb:1, rbi:0, sb:0, bb:1, hbp:0, so:7, gdp:1, avg:.071, slg:.071, obp:.133},
+    {name:"福敬登", g:3, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"福永裕基", g:65, pa:223, ab:198, r:20, h:51, double:6, triple:0, hr:2, tb:63, rbi:13, sb:8, bb:22, hbp:3, so:43, gdp:3, avg:.258, slg:.318, obp:.341},
+    {name:"藤嶋健人", g:36, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"ボスラー", g:61, pa:215, ab:198, r:11, h:38, double:5, triple:1, hr:5, tb:60, rbi:16, sb:0, bb:12, hbp:3, so:62, gdp:2, avg:.192, slg:.303, obp:.247},
+    {name:"細川成也", g:94, pa:395, ab:323, r:46, h:72, double:11, triple:1, hr:15, tb:130, rbi:47, sb:0, bb:63, hbp:6, so:105, gdp:7, avg:.223, slg:.402, obp:.357},
+    {name:"マラー", g:11, pa:21, ab:21, r:2, h:3, double:0, triple:0, hr:1, tb:6, rbi:3, sb:0, bb:0, hbp:0, so:11, gdp:0, avg:.143, slg:.286, obp:.143},
+    {name:"牧野憲伸", g:23, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"松葉貴大", g:3, pa:4, ab:4, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:2, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"松山晋也", g:28, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"三浦瑞樹", g:1, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"味谷大誠", g:4, pa:4, ab:4, r:0, h:1, double:0, triple:0, hr:0, tb:1, rbi:0, sb:0, bb:0, hbp:0, so:1, gdp:0, avg:.250, slg:.250, obp:.250},
+    {name:"村松開人", g:91, pa:378, ab:312, r:40, h:77, double:11, triple:5, hr:5, tb:113, rbi:34, sb:4, bb:51, hbp:3, so:66, gdp:9, avg:.247, slg:.362, obp:.353},
+    {name:"メヒア", g:18, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"柳裕也", g:17, pa:35, ab:27, r:1, h:2, double:0, triple:0, hr:0, tb:2, rbi:0, sb:0, bb:0, hbp:0, so:7, gdp:0, avg:.074, slg:.074, obp:.074},
+    {name:"山本泰寛", g:30, pa:69, ab:59, r:3, h:11, double:1, triple:0, hr:1, tb:15, rbi:4, sb:0, bb:6, hbp:0, so:13, gdp:0, avg:.186, slg:.254, obp:.262},
+    {name:"吉田聖弥", g:32, pa:0, ab:0, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:0, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"ロドリゲス", g:1, pa:2, ab:2, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:2, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"涌井秀章", g:6, pa:11, ab:9, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:1, hbp:0, so:9, gdp:0, avg:.000, slg:.000, obp:.100},
   ];
 
   function fmt3(x) {
