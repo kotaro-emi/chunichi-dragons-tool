@@ -3,13 +3,14 @@
 ## プロジェクト概要
 中日ドラゴンズファン向けの「なんでもツール」。試合結果・速報、選手成績データ、ニュース/トレード情報のまとめなどを扱うWebアプリを目指す。
 
-現状はプロジェクト初期段階。資料（中日ドラゴンズの歴史.txt / .pptx）に加え、打者成績まとめページ（index.html）を実装済み。本格的なNext.jsアプリはこれから。
+現状はプロジェクト初期段階。資料（中日ドラゴンズの歴史.txt / .pptx）に加え、打者成績まとめページ（中日打者成績.html）を実装済み。本格的なNext.jsアプリはこれから。
 
 ## 技術スタック
 - フロントエンド/全体: React (Next.js) ※本格実装は未着手
-- 現状の打者成績ページ (index.html) は Next.js 化前のつなぎとして、外部ライブラリなしの自己完結HTMLで実装
+- 現状の打者成績ページ本体は `中日打者成績.html`。Next.js 化前のつなぎとして、外部ライブラリなしの自己完結HTMLで実装
+- `index.html` は中身を持たず、GitHub PagesのルートURLを `中日打者成績.html` へ自動転送するだけの中継ページ。自動更新ルーティンもこのファイルは編集しない
 - リポジトリ: https://github.com/kotaro-emi/chunichi-dragons-tool (public)
-- 公開先: GitHub Pages https://kotaro-emi.github.io/chunichi-dragons-tool/ (masterブランチ/ルートから配信)
+- 公開先: GitHub Pages https://kotaro-emi.github.io/chunichi-dragons-tool/ (masterブランチ/ルートから配信、index.html経由で中日打者成績.htmlへ転送)
 - その他の構成（DB、APIなど）は未定。決まり次第このファイルを更新する。
 
 ## 想定機能
@@ -23,7 +24,7 @@
 - その他のデータソース（ニュース等）は未定。スクレイピング/API利用時は各サイトの利用規約に従うこと。
 
 ## 自動更新の仕組み
-- claude.ai のスケジュール実行クラウドエージェント（ルーティン）が、試合終了後の時間帯に1日1回 `https://npb.jp/bis/{年度}/stats/idb1_d.html` から最新の打撃成績を取得し、`index.html` 内の `PLAYERS` 配列と「最終更新」表示を書き換えて `master` ブランチにコミット・pushする。
+- claude.ai のスケジュール実行クラウドエージェント（ルーティン）が、試合終了後の時間帯に1日1回 `https://npb.jp/bis/{年度}/stats/idb1_d.html` から最新の打撃成績を取得し、`中日打者成績.html` 内の `PLAYERS` 配列と「最終更新」表示を書き換えて `master` ブランチにコミット・pushする。
 - 管理: https://claude.ai/code/routines （ルーティンの一覧・停止はここから行う。このリポジトリのCLAUDE.mdからは削除できない）
 - ローカルの最新化は `git pull` するか、GitHub Pages URL をブラウザで開けば常に最新が見られる。
 

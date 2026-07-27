@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>中日ドラゴンズ 打者成績</title>
+<style>
+  :root {
+    --navy-900: #101d34;
+    --navy-800: #16264a;
+    --navy-700: #21396b;
+    --blue-accent: #2f6fb5;
+    --blue-accent-soft: #e4ecf6;
+    --call-red: #a8402c;
+    --call-red-soft: #f6e6e1;
+    --paper: #f0f1ec;
+    --card: #fbfbf8;
+    --card-border: #dcdcd2;
+    --ink: #1b2431;
+    --ink-soft: #57606f;
+    --rule: #c8cabf;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --navy-900: #eef1f6;
+      --navy-800: #cfd9ea;
+      --navy-700: #9db3d6;
+      --blue-accent: #6ea1dd;
+      --blue-accent-soft: #1c2c46;
+      --call-red: #e2836c;
+      --call-red-soft: #3a2420;
+      --paper: #0c121f;
+      --card: #131b2b;
+      --card-border: #263355;
+      --ink: #e7eaf1;
+      --ink-soft: #9aa5bb;
+      --rule: #2a3654;
+    }
+  }
+  :root[data-theme="dark"] {
+    --navy-900: #eef1f6;
+    --navy-800: #cfd9ea;
+    --navy-700: #9db3d6;
+    --blue-accent: #6ea1dd;
+    --blue-accent-soft: #1c2c46;
+    --call-red: #e2836c;
+    --call-red-soft: #3a2420;
+    --paper: #0c121f;
+    --card: #131b2b;
+    --card-border: #263355;
+    --ink: #e7eaf1;
+    --ink-soft: #9aa5bb;
+    --rule: #2a3654;
+  }
+  :root[data-theme="light"] {
+    --navy-900: #101d34;
+    --navy-800: #16264a;
+    --navy-700: #21396b;
+    --blue-accent: #2f6fb5;
+    --blue-accent-soft: #e4ecf6;
+    --call-red: #a8402c;
+    --call-red-soft: #f6e6e1;
+    --paper: #f0f1ec;
+    --card: #fbfbf8;
+    --card-border: #dcdcd2;
+    --ink: #1b2431;
+    --ink-soft: #57606f;
+    --rule: #c8cabf;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Noto Sans JP", "Meiryo", sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  header {
+    background: var(--navy-900);
+    color: var(--paper);
+    padding: 2.2rem 1.5rem 1.6rem;
+    text-align: center;
+  }
+  header h1 {
+    margin: 0 0 0.4rem;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    letter-spacing: 0.02em;
+  }
+  header p {
+    margin: 0;
+    color: var(--blue-accent-soft);
+    font-size: 0.85rem;
+  }
+
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.4rem 1rem 3rem;
+  }
+
+  .meta-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.2rem;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 0.8rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+  .meta-bar strong { color: var(--ink); }
+  .badge {
+    display: inline-block;
+    background: var(--blue-accent-soft);
+    color: var(--navy-700);
+    border-radius: 999px;
+    padding: 0.15rem 0.7rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    background: var(--card);
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 920px;
+    font-size: 0.86rem;
+  }
+  thead th {
+    position: sticky;
+    top: 0;
+    background: var(--navy-800);
+    color: var(--paper);
+    padding: 0.6rem 0.5rem;
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+  thead th.name-col { text-align: left; padding-left: 0.9rem; }
+  thead th:hover { background: var(--navy-700); }
+  thead th.sorted::after { content: " ▾"; opacity: 0.7; }
+  tbody td {
+    padding: 0.5rem;
+    text-align: center;
+    border-top: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+  tbody td.name-col {
+    text-align: left;
+    padding-left: 0.9rem;
+    font-weight: 600;
+    color: var(--navy-800);
+  }
+  :root[data-theme="dark"] tbody td.name-col { color: var(--blue-accent); }
+  @media (prefers-color-scheme: dark) {
+    tbody td.name-col { color: var(--blue-accent); }
+  }
+  tbody tr:nth-child(even) { background: var(--blue-accent-soft); }
+  tbody tr:hover { background: var(--call-red-soft); }
+
+  .avg-high { color: var(--call-red); font-weight: 700; }
+
+  .section-title {
+    margin: 2.2rem 0 0.8rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--navy-800);
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  :root[data-theme="dark"] .section-title { color: var(--blue-accent); }
+  @media (prefers-color-scheme: dark) { .section-title { color: var(--blue-accent); } }
+  .section-title .sub {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+    gap: 0.7rem;
+  }
+  .player-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 0.9rem 0.7rem;
+    text-align: center;
+  }
+  .player-avatar {
+    width: 44px;
+    height: 44px;
+    margin: 0 auto 0.5rem;
+    border-radius: 50%;
+    background: var(--navy-800);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  .player-name {
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: var(--navy-800);
+    margin-bottom: 0.1rem;
+  }
+  :root[data-theme="dark"] .player-name { color: var(--blue-accent); }
+  @media (prefers-color-scheme: dark) { .player-name { color: var(--blue-accent); } }
+  .player-pa {
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    margin-bottom: 0.55rem;
+  }
+  .player-stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.3rem;
+  }
+  .stat-chip {
+    background: var(--blue-accent-soft);
+    color: var(--navy-700);
+    border-radius: 6px;
+    padding: 0.15rem 0.4rem;
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+  :root[data-theme="dark"] .stat-chip { color: var(--navy-900); }
+  @media (prefers-color-scheme: dark) { .stat-chip { color: var(--navy-900); } }
+
+  .rank-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  .rank-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+  }
+  .rank-card h3 {
+    margin: 0 0 0.15rem;
+    font-size: 0.95rem;
+    color: var(--navy-800);
+  }
+  :root[data-theme="dark"] .rank-card h3 { color: var(--blue-accent); }
+  @media (prefers-color-scheme: dark) { .rank-card h3 { color: var(--blue-accent); } }
+  .rank-card .rank-sub {
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    margin-bottom: 0.7rem;
+  }
+  .rank-row {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0.45rem;
+    font-size: 0.83rem;
+  }
+  .rank-num {
+    flex: 0 0 auto;
+    width: 1.3rem;
+    height: 1.3rem;
+    border-radius: 50%;
+    background: var(--navy-800);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.68rem;
+    font-weight: 700;
+  }
+  .rank-row:first-child .rank-num { background: var(--call-red); }
+  .rank-name {
+    flex: 0 0 auto;
+    min-width: 5.6em;
+    color: var(--ink);
+  }
+  .rank-bar-wrap {
+    flex: 1;
+    background: var(--rule);
+    border-radius: 4px;
+    height: 8px;
+    overflow: hidden;
+  }
+  .rank-bar {
+    height: 100%;
+    border-radius: 4px;
+    background: var(--blue-accent);
+  }
+  .rank-val {
+    flex: 0 0 auto;
+    width: 3.4em;
+    text-align: right;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  footer {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1rem 2.5rem;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+  }
+  footer a { color: var(--blue-accent); }
+  .note {
+    margin-top: 1.4rem;
+    padding: 0.9rem 1.1rem;
+    border-left: 3px solid var(--blue-accent);
+    background: var(--card);
+    border-radius: 0 8px 8px 0;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>中日ドラゴンズ 打者成績</h1>
+  <p>NPB公式サイトのデータをもとに、試合終了後に自動更新されます</p>
+</header>
+
+<main>
+  <div class="meta-bar">
+    <div>最終更新: <strong id="updated-at">2026-07-27 (JST) 手動更新・登録選手全員反映</strong></div>
+    <div><span class="badge" id="season-badge">2026年度 セ・リーグ公式戦</span></div>
+  </div>
+
+  <div class="section-title">選手別成績カード <span class="sub" id="cards-sub"></span></div>
+  <div class="card-grid" id="player-cards"></div>
+
+  <div class="section-title">チーム内ランキング <span class="sub">TOP5</span></div>
+  <div class="rank-grid" id="rank-grid"></div>
+
+  <div class="section-title">全選手 成績一覧</div>
+  <div class="table-wrap">
+    <table id="stats-table">
+      <thead>
+        <tr>
+          <th class="name-col" data-key="name" data-type="string">選手名</th>
+          <th data-key="g" data-type="num">試合</th>
+          <th data-key="pa" data-type="num">打席</th>
+          <th data-key="ab" data-type="num">打数</th>
+          <th data-key="r" data-type="num">得点</th>
+          <th data-key="h" data-type="num">安打</th>
+          <th data-key="double" data-type="num">二塁打</th>
+          <th data-key="triple" data-type="num">三塁打</th>
+          <th data-key="hr" data-type="num">本塁打</th>
+          <th data-key="tb" data-type="num">塁打</th>
+          <th data-key="rbi" data-type="num">打点</th>
+          <th data-key="sb" data-type="num">盗塁</th>
+          <th data-key="bb" data-type="num">四球</th>
+          <th data-key="hbp" data-type="num">死球</th>
+          <th data-key="so" data-type="num">三振</th>
+          <th data-key="gdp" data-type="num">併殺打</th>
+          <th data-key="avg" data-type="num" class="sorted">打率</th>
+          <th data-key="slg" data-type="num">長打率</th>
+          <th data-key="obp" data-type="num">出塁率</th>
+          <th data-key="ops" data-type="num">OPS</th>
+        </tr>
+      </thead>
+      <tbody id="stats-body"></tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <strong>このページについて</strong><br>
+    データ出典: <a href="https://npb.jp/bis/2026/stats/idb1_d.html" target="_blank" rel="noopener">NPB.jp 日本野球機構 — 中日ドラゴンズ個人打撃成績</a><br>
+投手登録の選手は除き、捕手・内野手・外野手のみ掲載しています。毎試合終了後、スケジュール実行されるエージェントが最新の成績を取得し、このページを自動更新します。列見出しをクリックすると並べ替えできます。
+  </div>
+</main>
+
+<footer>
+  <a href="https://npb.jp/bis/2026/stats/idb1_d.html" target="_blank" rel="noopener">NPB公式データを見る</a>
+</footer>
+
+<script>
+  // データ本体: 自動更新エージェントがこの配列を書き換える(投手登録の選手は除く。捕手・内野手・外野手のみ)
+  const PLAYERS = [
+    {name:"阿部寿樹", g:52, pa:108, ab:90, r:11, h:25, double:5, triple:0, hr:3, tb:39, rbi:19, sb:0, bb:15, hbp:1, so:27, gdp:4, avg:.278, slg:.433, obp:.383},
+    {name:"石伊雄太", g:69, pa:249, ab:230, r:21, h:59, double:12, triple:1, hr:6, tb:91, rbi:21, sb:0, bb:9, hbp:5, so:61, gdp:3, avg:.257, slg:.396, obp:.297},
+    {name:"石川昂弥", g:56, pa:203, ab:184, r:20, h:49, double:12, triple:0, hr:7, tb:82, rbi:29, sb:0, bb:18, hbp:1, so:48, gdp:4, avg:.266, slg:.446, obp:.335},
+    {name:"石橋康太", g:4, pa:3, ab:3, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:2, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"板山祐太郎", g:62, pa:166, ab:149, r:20, h:37, double:7, triple:2, hr:6, tb:66, rbi:23, sb:1, bb:15, hbp:1, so:39, gdp:4, avg:.248, slg:.443, obp:.319},
+    {name:"鵜飼航丞", g:49, pa:164, ab:155, r:16, h:38, double:6, triple:0, hr:5, tb:59, rbi:22, sb:1, bb:7, hbp:2, so:46, gdp:5, avg:.245, slg:.381, obp:.287},
+    {name:"大島洋平", g:21, pa:66, ab:62, r:4, h:12, double:1, triple:1, hr:0, tb:15, rbi:2, sb:1, bb:4, hbp:0, so:13, gdp:1, avg:.194, slg:.242, obp:.242},
+    {name:"岡林勇希", g:46, pa:203, ab:180, r:13, h:43, double:8, triple:0, hr:1, tb:54, rbi:13, sb:1, bb:15, hbp:2, so:23, gdp:1, avg:.239, slg:.300, obp:.299},
+    {name:"尾田剛樹", g:32, pa:10, ab:8, r:7, h:1, double:0, triple:0, hr:0, tb:1, rbi:0, sb:4, bb:1, hbp:0, so:5, gdp:0, avg:.125, slg:.125, obp:.222},
+    {name:"カリステ", g:26, pa:67, ab:61, r:7, h:12, double:2, triple:0, hr:1, tb:17, rbi:3, sb:1, bb:6, hbp:0, so:20, gdp:2, avg:.197, slg:.279, obp:.269},
+    {name:"加藤匠馬", g:23, pa:50, ab:44, r:2, h:6, double:1, triple:0, hr:0, tb:7, rbi:1, sb:1, bb:4, hbp:0, so:14, gdp:0, avg:.136, slg:.159, obp:.208},
+    {name:"川越誠司", g:4, pa:4, ab:4, r:0, h:2, double:2, triple:0, hr:0, tb:4, rbi:1, sb:0, bb:0, hbp:0, so:1, gdp:0, avg:.500, slg:1.000, obp:.500},
+    {name:"木下拓哉", g:21, pa:63, ab:61, r:5, h:17, double:3, triple:0, hr:0, tb:20, rbi:3, sb:0, bb:1, hbp:1, so:12, gdp:0, avg:.279, slg:.328, obp:.302},
+    {name:"サノー", g:50, pa:186, ab:160, r:19, h:37, double:4, triple:0, hr:13, tb:80, rbi:25, sb:0, bb:22, hbp:2, so:52, gdp:3, avg:.231, slg:.500, obp:.328},
+    {name:"高橋周平", g:45, pa:99, ab:86, r:7, h:23, double:2, triple:0, hr:0, tb:25, rbi:5, sb:0, bb:11, hbp:1, so:28, gdp:2, avg:.267, slg:.291, obp:.357},
+    {name:"田中幹也", g:73, pa:247, ab:213, r:24, h:50, double:9, triple:1, hr:0, tb:61, rbi:11, sb:8, bb:17, hbp:3, so:25, gdp:2, avg:.235, slg:.286, obp:.298},
+    {name:"知野直人", g:6, pa:3, ab:3, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:2, gdp:0, avg:.000, slg:.000, obp:.000},
+    {name:"辻本倫太郎", g:14, pa:17, ab:16, r:1, h:3, double:0, triple:1, hr:0, tb:5, rbi:0, sb:0, bb:0, hbp:0, so:3, gdp:0, avg:.188, slg:.313, obp:.188},
+    {name:"土田龍空", g:33, pa:42, ab:38, r:5, h:6, double:0, triple:0, hr:2, tb:12, rbi:4, sb:0, bb:3, hbp:1, so:11, gdp:0, avg:.158, slg:.316, obp:.238},
+    {name:"花田旭", g:19, pa:56, ab:53, r:5, h:12, double:3, triple:0, hr:1, tb:18, rbi:5, sb:0, bb:2, hbp:0, so:18, gdp:1, avg:.226, slg:.340, obp:.250},
+    {name:"樋口正修", g:7, pa:3, ab:3, r:5, h:1, double:0, triple:0, hr:0, tb:1, rbi:0, sb:3, bb:0, hbp:0, so:1, gdp:0, avg:.333, slg:.333, obp:.333},
+    {name:"ブライト健太", g:5, pa:15, ab:14, r:0, h:1, double:0, triple:0, hr:0, tb:1, rbi:0, sb:0, bb:1, hbp:0, so:7, gdp:1, avg:.071, slg:.071, obp:.133},
+    {name:"福永裕基", g:65, pa:223, ab:198, r:20, h:51, double:6, triple:0, hr:2, tb:63, rbi:13, sb:8, bb:22, hbp:3, so:43, gdp:3, avg:.258, slg:.318, obp:.341},
+    {name:"ボスラー", g:61, pa:215, ab:198, r:11, h:38, double:5, triple:1, hr:5, tb:60, rbi:16, sb:0, bb:12, hbp:3, so:62, gdp:2, avg:.192, slg:.303, obp:.247},
+    {name:"細川成也", g:94, pa:395, ab:323, r:46, h:72, double:11, triple:1, hr:15, tb:130, rbi:47, sb:0, bb:63, hbp:6, so:105, gdp:7, avg:.223, slg:.402, obp:.357},
+    {name:"味谷大誠", g:4, pa:4, ab:4, r:0, h:1, double:0, triple:0, hr:0, tb:1, rbi:0, sb:0, bb:0, hbp:0, so:1, gdp:0, avg:.250, slg:.250, obp:.250},
+    {name:"村松開人", g:91, pa:378, ab:312, r:40, h:77, double:11, triple:5, hr:5, tb:113, rbi:34, sb:4, bb:51, hbp:3, so:66, gdp:9, avg:.247, slg:.362, obp:.353},
+    {name:"山本泰寛", g:30, pa:69, ab:59, r:3, h:11, double:1, triple:0, hr:1, tb:15, rbi:4, sb:0, bb:6, hbp:0, so:13, gdp:0, avg:.186, slg:.254, obp:.262},
+    {name:"ロドリゲス", g:1, pa:2, ab:2, r:0, h:0, double:0, triple:0, hr:0, tb:0, rbi:0, sb:0, bb:0, hbp:0, so:2, gdp:0, avg:.000, slg:.000, obp:.000},
+  ];
+
+  function fmt3(x) {
+    if (x === null || x === undefined || isNaN(x)) return "-";
+    return x.toFixed(3).replace(/^0/, "");
+  }
+
+  function renderCards() {
+    const grid = document.getElementById("player-cards");
+    const sub = document.getElementById("cards-sub");
+    const batters = PLAYERS.filter(p => p.pa > 0).slice().sort((a, b) => b.pa - a.pa);
+    sub.textContent = `打席のある選手 ${batters.length}名・打席数順`;
+    grid.innerHTML = "";
+    batters.forEach(p => {
+      const ops = p.slg + p.obp;
+      const card = document.createElement("div");
+      card.className = "player-card";
+      const avatar = document.createElement("div");
+      avatar.className = "player-avatar";
+      avatar.textContent = p.name.slice(0, 1);
+      const name = document.createElement("div");
+      name.className = "player-name";
+      name.textContent = p.name;
+      const pa = document.createElement("div");
+      pa.className = "player-pa";
+      pa.textContent = `${p.pa}打席 / ${p.g}試合`;
+      const stats = document.createElement("div");
+      stats.className = "player-stats";
+      [["打率", fmt3(p.avg)], ["本", p.hr], ["点", p.rbi], ["OPS", fmt3(ops)]].forEach(([label, val]) => {
+        const chip = document.createElement("span");
+        chip.className = "stat-chip";
+        chip.textContent = `${label} ${val}`;
+        stats.appendChild(chip);
+      });
+      card.append(avatar, name, pa, stats);
+      grid.appendChild(card);
+    });
+  }
+
+  function renderRankings() {
+    const wrap = document.getElementById("rank-grid");
+    wrap.innerHTML = "";
+    const batters = PLAYERS.filter(p => p.pa > 0);
+    const qualified = batters.filter(p => p.ab >= 50);
+
+    function top5(list, getVal) {
+      return list.slice().sort((a, b) => getVal(b) - getVal(a)).slice(0, 5).map(p => ({ name: p.name, val: getVal(p) }));
+    }
+
+    const categories = [
+      { title: "打率", sub: "規定: 打数50以上", rows: top5(qualified, p => p.avg), fmt: fmt3 },
+      { title: "OPS", sub: "規定: 打数50以上", rows: top5(qualified, p => p.slg + p.obp), fmt: fmt3 },
+      { title: "本塁打", sub: "打席のある全選手", rows: top5(batters, p => p.hr), fmt: v => `${v}本` },
+      { title: "打点", sub: "打席のある全選手", rows: top5(batters, p => p.rbi), fmt: v => `${v}点` },
+      { title: "安打", sub: "打席のある全選手", rows: top5(batters, p => p.h), fmt: v => `${v}本` },
+      { title: "盗塁", sub: "打席のある全選手", rows: top5(batters, p => p.sb), fmt: v => `${v}個` },
+    ];
+
+    categories.forEach(cat => {
+      const card = document.createElement("div");
+      card.className = "rank-card";
+      const h3 = document.createElement("h3");
+      h3.textContent = cat.title;
+      const subEl = document.createElement("div");
+      subEl.className = "rank-sub";
+      subEl.textContent = cat.sub;
+      card.append(h3, subEl);
+      const maxVal = Math.max(1e-9, ...cat.rows.map(r => r.val));
+      cat.rows.forEach((r, i) => {
+        const row = document.createElement("div");
+        row.className = "rank-row";
+        const num = document.createElement("div");
+        num.className = "rank-num";
+        num.textContent = String(i + 1);
+        const name = document.createElement("div");
+        name.className = "rank-name";
+        name.textContent = r.name;
+        const barWrap = document.createElement("div");
+        barWrap.className = "rank-bar-wrap";
+        const bar = document.createElement("div");
+        bar.className = "rank-bar";
+        bar.style.width = `${Math.max(4, (r.val / maxVal) * 100)}%`;
+        barWrap.appendChild(bar);
+        const val = document.createElement("div");
+        val.className = "rank-val";
+        val.textContent = cat.fmt(r.val);
+        row.append(num, name, barWrap, val);
+        card.appendChild(row);
+      });
+      wrap.appendChild(card);
+    });
+  }
+
+  function render() {
+    const tbody = document.getElementById("stats-body");
+    tbody.innerHTML = "";
+    const maxAvg = Math.max(...PLAYERS.map(p => p.avg));
+    PLAYERS.forEach(p => {
+      const ops = p.slg + p.obp;
+      const tr = document.createElement("tr");
+      const cells = [
+        ["name-col", p.name],
+        ["", p.g], ["", p.pa], ["", p.ab], ["", p.r], ["", p.h],
+        ["", p.double], ["", p.triple], ["", p.hr], ["", p.tb], ["", p.rbi],
+        ["", p.sb], ["", p.bb], ["", p.hbp], ["", p.so], ["", p.gdp],
+        [p.avg === maxAvg ? "avg-high" : "", fmt3(p.avg)],
+        ["", fmt3(p.slg)], ["", fmt3(p.obp)], ["", fmt3(ops)],
+      ];
+      cells.forEach(([cls, val]) => {
+        const td = document.createElement("td");
+        if (cls) td.className = cls;
+        td.textContent = val;
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+  }
+
+  let sortKey = "avg", sortDir = -1;
+  function sortPlayers(key, type) {
+    if (sortKey === key) sortDir *= -1; else { sortKey = key; sortDir = -1; }
+    document.querySelectorAll("thead th").forEach(th => th.classList.remove("sorted"));
+    document.querySelector(`thead th[data-key="${key}"]`).classList.add("sorted");
+    PLAYERS.sort((a, b) => {
+      let av = key === "ops" ? a.slg + a.obp : a[key];
+      let bv = key === "ops" ? b.slg + b.obp : b[key];
+      if (type === "string") return sortDir * String(av).localeCompare(String(bv), "ja");
+      return sortDir * ((av ?? -Infinity) - (bv ?? -Infinity));
+    });
+    render();
+  }
+
+  document.querySelectorAll("thead th").forEach(th => {
+    th.addEventListener("click", () => sortPlayers(th.dataset.key, th.dataset.type));
+  });
+
+  renderCards();
+  renderRankings();
+  sortPlayers("avg", "num");
+</script>
+</body>
+</html>
