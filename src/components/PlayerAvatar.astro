@@ -1,0 +1,20 @@
+---
+// 実在選手の顔写真は著作権上の配慮からモックには使用せず、イニシャルのアバターで代用する。
+// 実写真を使う場合は、球団・選手本人の許諾があるもの（Phase 2以降でphotoUrlとして追加）に限定する想定。
+interface Props {
+  name: string;
+  role: 'batter' | 'pitcher';
+}
+
+const { name, role } = Astro.props;
+const initial = name.slice(0, 1);
+const ringColor = role === 'pitcher' ? 'ring-call-red' : 'ring-blue-accent';
+---
+
+<div
+  class={`flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-navy-700 to-blue-accent text-2xl font-bold text-paper ring-2 ring-offset-2 ring-offset-card ${ringColor} sm:h-24 sm:w-24 sm:text-3xl`}
+  style="font-family: var(--font-mincho);"
+  aria-hidden="true"
+>
+  {initial}
+</div>

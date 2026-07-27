@@ -1,0 +1,182 @@
+---
+import type { MockPlayer } from '../lib/mock-players';
+import StatChip from './StatChip.astro';
+
+interface Props {
+  player: MockPlayer;
+}
+
+const { player } = Astro.props;
+
+const tabs = [
+  { id: 'profile', label: 'プロフィール・経歴' },
+  { id: 'stats', label: '成績' },
+  { id: 'cheer', label: '応援歌' },
+  { id: 'features', label: '特徴' },
+];
+---
+
+<div data-tabs class="rounded-xl border border-card-border bg-card">
+  <div role="tablist" class="flex flex-wrap gap-1 border-b border-card-border p-2">
+    {
+      tabs.map((tab, i) => (
+        <button
+          type="button"
+          role="tab"
+          data-tab-btn={tab.id}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          class="tab-btn rounded-lg px-3 py-2 text-sm font-medium text-ink-soft transition-colors aria-selected:bg-blue-accent-soft aria-selected:text-blue-accent"
+        >
+          {tab.label}
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="p-5">
+    <div data-tab-panel="profile">
+      <dl class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
+        <dt class="text-ink-soft">出身</dt>
+        <dd>{player.profile.born}</dd>
+        <dt class="text-ink-soft">ドラフト年</dt>
+        <dd>{player.profile.draftYear}年</dd>
+      </dl>
+      <p class="mt-4 text-sm leading-relaxed text-ink">{player.profile.bio}</p>
+    </div>
+
+    <div data-tab-panel="stats" hidden>
+      {
+        player.role === 'batter' && player.battingStats && (
+          <div class="space-y-5">
+            <div>
+              <h3 class="mb-2 font-[family-name:var(--font-mincho)] text-sm text-blue-accent">打撃成績</h3>
+              <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                <StatChip label="打率" value={player.battingStats.avg.toFixed(3)} />
+                <StatChip label="本塁打" value={`${player.battingStats.hr}`} />
+                <StatChip label="打点" value={`${player.battingStats.rbi}`} />
+                <StatChip label="安打" value={`${player.battingStats.h}`} />
+              </div>
+            </div>
+            {player.fieldingStats && (
+              <div>
+                <h3 class="mb-2 font-[family-name:var(--font-mincho)] text-sm text-blue-accent">守備成績</h3>
+                <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  <StatChip label="守備位置" value={player.fieldingStats.position} />
+                  <StatChip label="刺殺" value={`${player.fieldingStats.putouts}`} />
+                  <StatChip label="補殺" value={`${player.fieldingStats.assists}`} />
+                  <StatChip label="守備率" value={player.fieldingStats.fieldingPct.toFixed(3)} />
+                </div>
+              </div>
+            )}
+          </div>
+        )
+      }
+      {
+        player.role === 'pitcher' && player.pitchingStats && (
+          <div class="space-y-5">
+            <div>
+              <h3 class="mb-2 font-[family-name:var(--font-mincho)] text-sm text-blue-accent">投手成績</h3>
+              <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                <StatChip label="防御率" value={player.pitchingStats.era.toFixed(2)} />
+                <StatChip label="勝敗" value={`${player.pitchingStats.wins}勝${player.pitchingStats.losses}敗`} />
+                <StatChip label="セーブ" value={`${player.pitchingStats.saves}`} />
+                <StatChip label="奪三振" value={`${player.pitchingStats.strikeouts}`} />
+                <StatChip label="最速" value={`${player.pitchingStats.maxVelocityKmh}km/h`} />
+              </div>
+            </div>
+            <div>
+              <h3 class="mb-2 font-[family-name:var(--font-mincho)] text-sm text-blue-accent">球種</h3>
+              <div class="flex flex-wrap gap-2">
+                {player.pitchingStats.pitchTypes.map((pitch) => (
+                  <span class="rounded-full border border-blue-accent/40 bg-blue-accent-soft px-3 py-1 text-xs text-blue-accent">
+                    {pitch}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )
+      }
+
+      {
+        player.careerStats.length > 0 && (
+          <div class="mt-6">
+            <h3 class="mb-2 font-[family-name:var(--font-mincho)] text-sm text-blue-accent">年度別成績</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full min-w-[360px] border-collapse text-sm">
+                <thead>
+                  <tr class="border-b border-card-border text-left text-ink-soft">
+                    <th class="py-2 font-normal">年度</th>
+                    <th class="py-2 font-normal">所属</th>
+                    {player.role === 'batter' ? (
+                      <>
+                        <th class="py-2 font-normal">打率</th>
+                        <th class="py-2 font-normal">本塁打</th>
+                        <th class="py-2 font-normal">打点</th>
+                      </>
+                    ) : (
+                      <>
+                        <th class="py-2 font-normal">防御率</th>
+                        <th class="py-2 font-normal">勝</th>
+                        <th class="py-2 font-normal">敗</th>
+                      </>
+                    )}
+                  </tr>
+                </thead>
+                <tbody>
+                  {player.careerStats.map((s) => (
+                    <tr class="border-b border-card-border last:border-0">
+                      <td class="py-2 font-semibold text-ink">{s.year}</td>
+                      <td class="py-2 text-ink-soft">{s.team}</td>
+                      {player.role === 'batter' ? (
+                        <>
+                          <td class="py-2">{s.avg?.toFixed(3)}</td>
+                          <td class="py-2">{s.hr}</td>
+                          <td class="py-2">{s.rbi}</td>
+                        </>
+                      ) : (
+                        <>
+                          <td class="py-2">{s.era?.toFixed(2)}</td>
+                          <td class="py-2">{s.wins}</td>
+                          <td class="py-2">{s.losses}</td>
+                        </>
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )
+      }
+    </div>
+
+    <div data-tab-panel="cheer" hidden>
+      <div class="rounded-lg bg-navy-900 px-5 py-4 text-paper">
+        {player.cheerSong.lyricsExcerpt.map((line) => <p class="font-[family-name:var(--font-mincho)] text-sm leading-8">{line}</p>)}
+        <p class="mt-2 text-xs text-call-red">{player.cheerSong.callLine}</p>
+      </div>
+      <p class="mt-2 text-xs text-ink-soft">※著作権への配慮のため歌詞は一部抜粋です。</p>
+    </div>
+
+    <div data-tab-panel="features" hidden>
+      <p class="text-sm leading-relaxed text-ink">{player.features}</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((wrapper) => {
+    const buttons = wrapper.querySelectorAll<HTMLButtonElement>('[data-tab-btn]');
+    const panels = wrapper.querySelectorAll<HTMLElement>('[data-tab-panel]');
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.tabBtn;
+        buttons.forEach((b) => b.setAttribute('aria-selected', String(b === btn)));
+        panels.forEach((p) => {
+          p.hidden = p.dataset.tabPanel !== target;
+        });
+      });
+    });
+  });
+</script>
