@@ -1,0 +1,543 @@
+<title>中日ドラゴンズ 選手別応援歌辞典</title>
+<style>
+  :root {
+    --navy-900: #101d34;
+    --navy-800: #16264a;
+    --navy-700: #21396b;
+    --blue-accent: #2f6fb5;
+    --blue-accent-soft: #e4ecf6;
+    --call-red: #a8402c;
+    --call-red-soft: #f6e6e1;
+    --paper: #f0f1ec;
+    --card: #fbfbf8;
+    --card-border: #dcdcd2;
+    --ink: #1b2431;
+    --ink-soft: #57606f;
+    --rule: #c8cabf;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --navy-900: #eef1f6;
+      --navy-800: #cfd9ea;
+      --navy-700: #9db3d6;
+      --blue-accent: #6ea1dd;
+      --blue-accent-soft: #1c2c46;
+      --call-red: #e2836c;
+      --call-red-soft: #3a2420;
+      --paper: #0c121f;
+      --card: #131b2b;
+      --card-border: #26355;
+      --ink: #e7eaf1;
+      --ink-soft: #9aa5bb;
+      --rule: #2a3654;
+    }
+  }
+  :root[data-theme="dark"] {
+    --navy-900: #eef1f6;
+    --navy-800: #cfd9ea;
+    --navy-700: #9db3d6;
+    --blue-accent: #6ea1dd;
+    --blue-accent-soft: #1c2c46;
+    --call-red: #e2836c;
+    --call-red-soft: #3a2420;
+    --paper: #0c121f;
+    --card: #131b2b;
+    --card-border: #26355;
+    --ink: #e7eaf1;
+    --ink-soft: #9aa5bb;
+    --rule: #2a3654;
+  }
+  :root[data-theme="light"] {
+    --navy-900: #101d34;
+    --navy-800: #16264a;
+    --navy-700: #21396b;
+    --blue-accent: #2f6fb5;
+    --blue-accent-soft: #e4ecf6;
+    --call-red: #a8402c;
+    --call-red-soft: #f6e6e1;
+    --paper: #f0f1ec;
+    --card: #fbfbf8;
+    --card-border: #dcdcd2;
+    --ink: #1b2431;
+    --ink-soft: #57606f;
+    --rule: #c8cabf;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Noto Sans JP", "Meiryo", sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .mincho {
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+  }
+
+  a { color: var(--blue-accent); }
+
+  header.top {
+    padding: 3.2rem 1.5rem 2.2rem;
+    text-align: center;
+    border-bottom: 1px solid var(--rule);
+    background: linear-gradient(180deg, var(--navy-900) 0%, var(--navy-800) 100%);
+  }
+  header.top .eyebrow {
+    color: #a9c2e6;
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    margin: 0 0 0.9rem;
+  }
+  header.top h1 {
+    margin: 0;
+    color: #f4f6fa;
+    font-size: clamp(1.9rem, 4.5vw, 2.7rem);
+    text-wrap: balance;
+    letter-spacing: 0.03em;
+  }
+  header.top p.sub {
+    margin: 0.9rem auto 0;
+    max-width: 40rem;
+    color: #c3cee3;
+    font-size: 0.95rem;
+  }
+
+  nav.jump {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    padding: 0.85rem 1rem;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+  }
+  nav.jump a {
+    text-decoration: none;
+    color: var(--navy-700);
+    font-size: 0.82rem;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--card-border);
+    border-radius: 999px;
+    background: var(--card);
+    white-space: nowrap;
+  }
+  nav.jump a:hover { border-color: var(--blue-accent); color: var(--blue-accent); }
+
+  main {
+    max-width: 56rem;
+    margin: 0 auto;
+    padding: 2.6rem 1.5rem 5rem;
+  }
+
+  section.pos-group {
+    margin-top: 3.2rem;
+    scroll-margin-top: 3.5rem;
+  }
+  section.pos-group:first-of-type { margin-top: 2rem; }
+
+  .pos-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    border-bottom: 2px solid var(--navy-700);
+    padding-bottom: 0.55rem;
+    margin-bottom: 1.4rem;
+  }
+  .pos-head h2 {
+    font-size: 1.3rem;
+    margin: 0;
+    color: var(--navy-900);
+    letter-spacing: 0.05em;
+  }
+  .pos-head .count {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 1.3rem 1.5rem;
+    scroll-margin-top: 3.5rem;
+  }
+  .card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .card-head h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--navy-900);
+    letter-spacing: 0.04em;
+  }
+  .tag-row { display: flex; gap: 0.4rem; align-items: center; }
+  .tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    padding: 0.2rem 0.55rem;
+    border-radius: 5px;
+    background: var(--blue-accent-soft);
+    color: var(--blue-accent);
+    white-space: nowrap;
+  }
+  .tag.foreign { background: var(--call-red-soft); color: var(--call-red); }
+
+  .lyrics {
+    border-left: 3px solid var(--blue-accent);
+    padding-left: 0.9rem;
+    margin: 0.4rem 0;
+    font-size: 1rem;
+    color: var(--ink);
+  }
+  .lyrics .line { margin: 0.15rem 0; }
+  .lyrics .shout { color: var(--call-red); font-weight: 600; }
+  .lyrics .label {
+    display: block;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    margin: 0.6rem 0 0.15rem;
+    text-transform: uppercase;
+  }
+  .lyrics .label:first-child { margin-top: 0; }
+
+  .call-line {
+    margin-top: 0.7rem;
+    font-size: 0.95rem;
+    color: var(--call-red);
+    font-weight: 600;
+  }
+
+  section.extra {
+    margin-top: 3.2rem;
+  }
+  section.extra .card { }
+  section.extra p { color: var(--ink-soft); font-size: 0.92rem; }
+
+  footer {
+    max-width: 56rem;
+    margin: 0 auto;
+    padding: 0 1.5rem 3rem;
+    color: var(--ink-soft);
+    font-size: 0.82rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 1.6rem;
+  }
+  footer h4 {
+    color: var(--navy-900);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+  footer ul { padding-left: 1.1rem; margin: 0.4rem 0 1.2rem; }
+  footer li { margin: 0.2rem 0; }
+  footer a { color: var(--ink-soft); }
+</style>
+
+<header class="top">
+  <p class="eyebrow">Chunichi Dragons &middot; 2026 Season</p>
+  <h1 class="mincho">選手別応援歌辞典</h1>
+  <p class="sub">中日ドラゴンズ 2026年シーズンの個人応援歌を、ポジション別に歌詞つきでまとめました。「かっとばせー！」の掛け声部分は赤字で示しています。</p>
+</header>
+
+<nav class="jump">
+  <a href="#pitchers">投手</a>
+  <a href="#catchers">捕手</a>
+  <a href="#infielders">内野手</a>
+  <a href="#outfielders">外野手</a>
+  <a href="#extra">汎用テーマ・球団歌</a>
+</nav>
+
+<main>
+
+  <section class="pos-group" id="pitchers">
+    <div class="pos-head"><h2 class="mincho">投手</h2><span class="count">2曲</span></div>
+    <div class="cards">
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">大野雄大</h3><div class="tag-row"><span class="tag">投手</span></div></div>
+        <div class="lyrics">
+          <p class="line">左腕の系譜 受け継ぎ挑む</p>
+          <p class="line">この仲間とともに 夢の舞台へ</p>
+        </div>
+        <p class="call-line">かっとばせー！ おおの！</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">根尾昂</h3><div class="tag-row"><span class="tag">投手</span></div></div>
+        <span class="lyrics-label"></span>
+        <div class="lyrics">
+          <span class="label">通常版</span>
+          <p class="line">（ファンファーレ）オーオオー・・・</p>
+          <p class="line">覇道極める男 今だ魅せてやれ根尾昂</p>
+          <p class="line">その名響かせて いざ終わりなき道をゆく</p>
+          <span class="label">パワプロ Ver.</span>
+          <p class="line">あきら！ GO！GO！あきら！</p>
+          <p class="line">オイ！ オイ！ オイ！ 今だチャンスだ打て！</p>
+          <p class="line"><span class="shout">かっせかっせあきら！ かっせかっせあきら！</span></p>
+        </div>
+        <p class="call-line">かっとばせー！ あきら！</p>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="pos-group" id="catchers">
+    <div class="pos-head"><h2 class="mincho">捕手</h2><span class="count">4曲</span></div>
+    <div class="cards">
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">石伊雄太</h3><div class="tag-row"><span class="tag">捕手</span></div></div>
+        <div class="lyrics">
+          <p class="line">夢追い求め 奇跡呼ぶ要となれ</p>
+          <p class="line">幾千の願い乗せて 光放て</p>
+        </div>
+        <p class="call-line">かっとばせー！ いしい！</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">木下拓哉</h3><div class="tag-row"><span class="tag">捕手</span></div></div>
+        <div class="lyrics">
+          <p class="line">魅せろ今 勝利のため</p>
+          <p class="line">己の道を信じて ゆけ拓哉</p>
+        </div>
+        <p class="call-line">かっとばせー！ きのした！</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">宇佐見真吾</h3><div class="tag-row"><span class="tag">捕手</span></div></div>
+        <div class="lyrics">
+          <p class="line">我らと未来へ虹かけろ</p>
+          <p class="line">美しき世界を君の手で</p>
+        </div>
+        <p class="call-line">かっとばせー！ うさみ！</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">加藤匠馬</h3><div class="tag-row"><span class="tag">捕手</span></div></div>
+        <div class="lyrics">
+          <p class="line">闘志を燃やせ 気迫で守り抜け</p>
+          <p class="line">勝利の歓声 受けて羽ばたけ</p>
+        </div>
+        <p class="call-line">かっとばせー！ かとう！</p>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="pos-group" id="infielders">
+    <div class="pos-head"><h2 class="mincho">内野手</h2><span class="count">9曲</span></div>
+    <div class="cards">
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">田中幹也</h3><div class="tag-row"><span class="tag">内野手</span></div></div>
+        <div class="lyrics">
+          <p class="line">走れグランドを全力で 夢追い人よ</p>
+          <p class="line">冴え渡る華麗なその姿 煌めけ鮮やかに</p>
+        </div>
+        <p class="call-line">かっとばせー！ みきや！</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">高橋周平</h3><div class="tag-row"><span class="tag">内野手</span></div></div>
+        <div class="lyrics">
+          <p class="line">球は伸びゆく永遠に 頂きへ <span class="shout">（周平！）</span></p>
+          <p class="line">更なる高み 行け周平 <span class="shout">（周平！）</span></p>
+        </div>
+        <p class="call-line">かっとばせー！ しゅうへい！</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">オーランド・カリステ</h3><div class="tag-row"><span class="tag foreign">外国人</span><span class="tag">内野手</span></div></div>
+        <div class="lyrics">
+          <p class="line">今この地で 歓声起こせよ</p>
+          <p class="line"><span class="shout">【カ！リ！ス！テ！】</span> 今日も頼むぜ</p>
+        </div>
+        <p class="call-line">Go！ Go！ Let's Go！ カリステ！</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">村松開人</h3><div class="tag-row"><span class="tag">内野手</span></div></div>
+        <div class="lyrics">
+          <p class="line">共に行こう期待を背負い 時代を切り開く</p>
+          <p class="line">君のその姿に 鼓動を重ねて</p>
+        </div>
+        <p class="call-line">かっとばせー！ むらまつ！</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">福永裕基</h3><div class="tag-row"><span class="tag">内野手</span></div></div>
+        <div class="lyrics">
+          <p class="line">試練を乗り越え 栄光ある戦士となる</p>
+          <p class="line">広角に打ち返せ 福永裕基</p>
+        </div>
+        <p class="call-line">かっとばせー！ ふくなが！</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">石川昂弥</h3><div class="tag-row"><span class="tag">内野手</span></div></div>
+        <div class="lyrics">
+          <span class="label">前奏</span>
+          <p class="line">昂る一打で 挑め戦え</p>
+          <span class="label">本編</span>
+          <p class="line">振り抜け <span class="shout">【昂弥！】</span> 飛ばせ <span class="shout">【昂弥！】</span> 夢の放物線</p>
+          <p class="line">昂る一打で 挑め戦え</p>
+        </div>
+        <p class="call-line">かっとばせー！ たかや！</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">山本泰寛</h3><div class="tag-row"><span class="tag">内野手</span></div></div>
+        <div class="lyrics">
+          <p class="line">多才な技と 信じてきた道が</p>
+          <p class="line">今輝きを放ち 歴史を刻む</p>
+        </div>
+        <p class="call-line">かっとばせー！ やまもと！</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">阿部寿樹</h3><div class="tag-row"><span class="tag">内野手</span></div></div>
+        <div class="lyrics">
+          <p class="line">鍛えた技で 魅せろ力の限り</p>
+          <p class="line">新たな時代へと 今スタート</p>
+        </div>
+        <p class="call-line">かっとばせー！ あべ！</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">龍空</h3><div class="tag-row"><span class="tag">内野手</span></div></div>
+        <div class="lyrics">
+          <p class="line">さあ飛び立て 栄光の頂へ</p>
+          <p class="line">秘めた想い 今龍よ空へ舞い昇れ</p>
+        </div>
+        <p class="call-line">かっとばせー！ りゅうく！</p>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="pos-group" id="outfielders">
+    <div class="pos-head"><h2 class="mincho">外野手</h2><span class="count">7曲</span></div>
+    <div class="cards">
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">岡林勇希</h3><div class="tag-row"><span class="tag">外野手</span></div></div>
+        <div class="lyrics">
+          <p class="line">夢へ導く 希望の道を</p>
+          <p class="line">ひたむきに前進 さあ歩み続けろ</p>
+        </div>
+        <p class="call-line">かっとばせー！ ばやし！</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">大島洋平</h3><div class="tag-row"><span class="tag">外野手</span></div></div>
+        <div class="lyrics">
+          <p class="line">飛び出せ大島 疾風のごとく</p>
+          <p class="line">その手でチャンスを 切り開け</p>
+        </div>
+        <p class="call-line">かっとばせー！ おおしま！</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">ジェイソン・ボスラー</h3><div class="tag-row"><span class="tag foreign">外国人</span><span class="tag">外野手</span></div></div>
+        <div class="lyrics">
+          <p class="line">この地で夢を叶えよう</p>
+          <p class="line">揺るがぬハートで立ち向かえ</p>
+          <p class="line">闇夜を照らす 勝利への一撃</p>
+        </div>
+        <p class="call-line">ゴーゴーレッツゴー！ ボスラー！</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">ブライト健太</h3><div class="tag-row"><span class="tag">外野手</span></div></div>
+        <div class="lyrics">
+          <p class="line">天(そら)に輝く想いが 導く運命(さだめ)</p>
+          <p class="line">宿した力見せる時 放て走れ叫べ</p>
+        </div>
+        <p class="call-line">かっとばせー！ ブライト！</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">上林誠知</h3><div class="tag-row"><span class="tag">外野手</span></div></div>
+        <div class="lyrics">
+          <p class="line">竜の力を纂い 輝く未来呼べ</p>
+          <p class="line">風切り裂き走る 誠知る男</p>
+        </div>
+        <p class="call-line">かっとばせー！ うえばやし！</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">細川成也</h3><div class="tag-row"><span class="tag">外野手</span></div></div>
+        <div class="lyrics">
+          <span class="label">前奏</span>
+          <p class="line">ドンドン <span class="shout">【成也！】</span> ドンドン <span class="shout">【成也！】</span> 轟く一打</p>
+          <span class="label">本編</span>
+          <p class="line">燃ゆる気迫を胸に 猛打炸裂</p>
+          <p class="line">遙か彼方 強き一打 無限の空へ</p>
+        </div>
+        <p class="call-line">かっとばせー！ せいや！</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">鵜飼航丞</h3><div class="tag-row"><span class="tag">外野手</span></div></div>
+        <div class="lyrics">
+          <p class="line">一振りで 勝利の糸を手繰り寄せろ</p>
+          <p class="line">篝火の如くチームを 照らすホームラン</p>
+        </div>
+        <p class="call-line">かっとばせー！ うかい！</p>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="extra" id="extra">
+    <div class="pos-head"><h2 class="mincho">汎用テーマ・球団歌</h2></div>
+    <div class="cards">
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">野手汎用テーマ</h3></div>
+        <p>個別応援歌の割り当てが無い選手や交代選手に対して使われる共通の応援歌。（選手名）の部分に打者の名前が入ります。</p>
+        <div class="lyrics">
+          <p class="line">さあ今だ放て 熱き想い</p>
+          <p class="line">勝利への弾道を 描け（選手名）</p>
+          <span class="label">コール（男性→女性→全員）</span>
+          <p class="line">打て打て（選手名） ／ 打て打て（選手名） ／ <span class="shout">かっとばせー（選手名）</span></p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h3 class="mincho">燃えよドラゴンズ！</h3></div>
+        <p>1974年発表の球団公式応援歌。三番まであり、各番の締めに「いいぞがんばれドラゴンズ　燃えよドラゴンズ」のサビが入り、曲全体は「がんばれがんばれドラゴンズ　燃えよドラゴンズ」で結ばれます。著作権の関係上、全文の掲載は控えます。歌詞全文は下記の出典サイトでご確認ください。</p>
+      </article>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <h4>出典</h4>
+  <ul>
+    <li><a href="https://ouenka-shu.com/ouenka_dragons/">プロ野球 応援歌集 - 中日ドラゴンズ応援歌まとめ【2026年最新】</a></li>
+    <li><a href="https://chunichiouendan.wixsite.com/dragonsouendan/kashi">中日ドラゴンズ応援団 公式サイト - 歌詞カード</a></li>
+    <li><a href="https://npb.jp/bis/teams/rst_d.html">NPB.jp 日本野球機構 - 中日ドラゴンズ 2026年度選手一覧</a></li>
+  </ul>
+  <p>※応援歌は年度や選手の移籍・成績により変更されることがあります。最新版は上記の出典サイトでご確認ください。掛け声・コール部分は球場や応援団によって細部が異なる場合があります。</p>
+</footer>
