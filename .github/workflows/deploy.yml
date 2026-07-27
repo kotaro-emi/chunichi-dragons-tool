@@ -25,14 +25,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # TODO(Phase 2): data/*.json を追加したら、ここでJSONの形式チェック
-      # （例: 各ファイルを `node -e "JSON.parse(require('fs').readFileSync(...))"` で検証）
-      # を挟み、壊れたデータがビルド失敗の原因になった際にわかりやすくする（開発計画書2.5節）
+      # data/*.json が壊れていた場合、原因がわかりやすいようにビルド前に検証する
+      # （開発計画書2.5節：ルーティンが壊れたJSONをpushしてもビルド失敗の理由がすぐわかるようにする）
+      - name: Validate data/*.json
+        run: |
+          for f in data/*.json; do
+            node -e "JSON.parse(require('fs').readFileSync('$f', 'utf8'))" || { echo "::error::$f is not valid JSON"; exit 1; }
+          done
 
       - name: Install, build, and upload site
         uses: withastro/action@v3
         with:
           node-version: 22
+        env:
+          # SupabaseのURL/anonキーは公開前提の値（秘密情報ではない、RLSが防御線）。
+          # リポジトリのSettings > Secrets and variables > Actions > Variables で設定する。
+          PUBLIC_SUPABASE_URL: ${{ vars.PUBLIC_SUPABASE_URL }}
+          PUBLIC_SUPABASE_ANON_KEY: ${{ vars.PUBLIC_SUPABASE_ANON_KEY }}
 
   deploy:
     needs: build

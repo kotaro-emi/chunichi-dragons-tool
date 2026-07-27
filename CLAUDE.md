@@ -10,7 +10,8 @@ Astro（静的サイト書き出し）+ GitHub Actions + GitHub Pagesへ移行�
 - GitHub Actions（`.github/workflows/deploy.yml`）でビルド→GitHub Pagesへデプロイ。ビルドは全ブランチのpushで実行、デプロイは`master`のみ
 - リポジトリ: https://github.com/kotaro-emi/chunichi-dragons-tool (public)
 - 公開先: GitHub Pages https://kotaro-emi.github.io/chunichi-dragons-tool/ (masterブランチ、Actions経由でビルド・デプロイ)
-- データはコード内JSON（`data/players.json` / `data/history.json`）。DB・Supabase等は計画書のPhase 5以降で導入予定、現時点では未導入
+- データはコード内JSON（`data/players.json` / `data/history.json` / `data/reinforcement.json`）
+- Supabase（お気に入り・コメント・試合速報用のDB＋認証）を導入済み（Phase 5、コード面のみ）。スキーマは`supabase/schema.sql`、クライアントは`src/lib/supabase.ts`（`PUBLIC_SUPABASE_URL`・`PUBLIC_SUPABASE_ANON_KEY`が未設定でも`supabase`が`null`になるだけでビルドは壊れない）。**ただしSupabase側のプロジェクト自体はまだ作成されておらず、実際に使えるのはユーザーがプロジェクトを作成しSQLを実行し、URL/anonキーをローカルの`.env`とGitHub Actionsのrepository variables（`PUBLIC_SUPABASE_URL`・`PUBLIC_SUPABASE_ANON_KEY`）に設定した後**
 
 ## 想定機能
 - 試合結果・速報の取得（計画書3.6節、Supabase導入後に実装予定）
@@ -29,6 +30,11 @@ Astro（静的サイト書き出し）+ GitHub Actions + GitHub Pagesへ移行�
 - ニュース・トレード情報のまとめ機能は不採用（報道記事の転載・要約は著作権上のリスクが大きいため対象外とする方針）。今後もこのアプリでは扱わない
 - その他のデータソースを追加する場合は未定。スクレイピング/API利用時は各サイトの利用規約に従うこと。
 - **未整備**: 選手プロフィール（生年月日・身長体重・ドラフト年度等の経歴情報）は上記のどのソースにも含まれておらず、`data/players.json`にはまだ存在しない。追加するデータソース（NPB選手個別ページ等）は未定、Phase 3着手時に方針を決める。二軍選手の実データも同様に未着手（`/mock/`内の今井蓮は二軍表示確認用の架空選手）。
+
+## Supabase基盤（Phase 5）
+- テーブル: `profiles`（表示名。コメントにメールアドレスを晒さないための最小プロフィール、サインアップ時にトリガーで自動作成）、`favorites`（お気に入り、`user_id`+`player_slug`）、`comments`（`target_type`が`player`/`game`、`target_id`、本文は300文字上限をDB制約でも強制）、`game_scores`（Phase 6用の試合速報の土台）
+- RLS方針: `profiles`/`comments`は全員読み取り可・本人のみ書き込み可。`favorites`は本人のみ読み書き可。`game_scores`は全員読み取り可・書き込みポリシーなし（anon/authenticatedからは一切書き込めない。書き込むclaude.aiルーティンは、RLSを迂回するservice_roleキーを使う想定。service_roleキーは絶対に公開サイトのJSに含めないこと）
+- 不適切なコメントの削除は専用の管理画面を作らず、Supabaseダッシュボードから運営者が直接削除する運用（計画書3.5.5節）
 
 ## 自動更新の仕組み
 - claude.ai のスケジュール実行クラウドエージェント（ルーティン）が、試合終了後の時間帯に1日1回 `data/players.json` を書き換えて `master` ブランチにコミット・pushする想定（打撃・守備・投手成績を対象。応援歌・経歴は変化頻度が低いため低頻度更新でよい）。**現時点でこのルーティンは旧`中日打者成績.html`のPLAYERS配列を書き換える設定のままなので、`data/players.json`を書き換えるように更新が必要**（管理: https://claude.ai/code/routines 、このリポジトリのCLAUDE.mdからは変更できない）。
