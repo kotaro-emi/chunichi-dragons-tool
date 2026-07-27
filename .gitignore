@@ -1,16 +1,4 @@
 ﻿node_modules/
 .next/
 .env*
-!.env.example
-
-# Astro build output / generated types
-dist/
-.astro/
-
-# logs
-npm-debug.log*
-
-# OS / editor
-.DS_Store
-.idea/
 
