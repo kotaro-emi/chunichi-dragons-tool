@@ -1,0 +1,73 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import StatChip from '../../components/StatChip.astro';
+import { history } from '../../lib/history';
+
+const { teamInfo, teamNameHistory, timeline } = history;
+---
+
+<Layout title="球団の歴史｜ドラゴンズ手帳">
+  <header class="mb-6">
+    <h1 class="font-[family-name:var(--font-mincho)] text-2xl text-navy-900 sm:text-3xl">球団の歴史</h1>
+    <p class="mt-2 text-sm text-ink-soft">{teamInfo.anniversaryNote}</p>
+  </header>
+
+  <section class="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+    <StatChip label="創設" value={`${teamInfo.founded}年`} />
+    <StatChip label="リーグ優勝" value={`通算${teamInfo.leaguePennants}回`} />
+    <StatChip label="日本一" value={`通算${teamInfo.japanSeriesTitles}回`} />
+    <StatChip label="チームカラー" value={teamInfo.teamColor} />
+  </section>
+
+  <section class="mb-10 rounded-xl border border-card-border bg-card p-5">
+    <h2 class="mb-3 font-[family-name:var(--font-mincho)] text-sm text-blue-accent">球団情報</h2>
+    <dl class="grid grid-cols-1 gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
+      <dt class="text-ink-soft">本拠地</dt>
+      <dd>{teamInfo.homeStadium}</dd>
+      <dt class="text-ink-soft">二軍本拠地</dt>
+      <dd>{teamInfo.farmStadium}</dd>
+      <dt class="text-ink-soft">運営母体</dt>
+      <dd>{teamInfo.operator}</dd>
+      <dt class="text-ink-soft">公式マスコット</dt>
+      <dd>{teamInfo.mascot}</dd>
+      <dt class="text-ink-soft">リーグ優勝年</dt>
+      <dd>{teamInfo.leaguePennantYears.join('、')}</dd>
+      <dt class="text-ink-soft">日本一達成年</dt>
+      <dd>{teamInfo.japanSeriesYears.join('、')}</dd>
+    </dl>
+  </section>
+
+  <section class="mb-10">
+    <h2 class="mb-3 font-[family-name:var(--font-mincho)] text-sm text-blue-accent">球団名の変遷</h2>
+    <div class="overflow-x-auto rounded-xl border border-card-border bg-card">
+      <table class="w-full min-w-[320px] border-collapse text-sm">
+        <tbody>
+          {
+            teamNameHistory.map((t) => (
+              <tr class="border-b border-card-border last:border-0">
+                <td class="whitespace-nowrap py-2 pl-4 pr-4 text-ink-soft">{t.years}</td>
+                <td class="py-2 pr-4 font-semibold text-ink">{t.name}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="mb-4 font-[family-name:var(--font-mincho)] text-sm text-blue-accent">年表</h2>
+    <div class="space-y-6 border-l-2 border-card-border pl-5">
+      {
+        timeline.map((entry) => (
+          <div class="relative">
+            <div class="absolute -left-[1.65rem] top-1 h-3 w-3 rounded-full bg-blue-accent" />
+            <p class="text-xs font-semibold text-blue-accent">{entry.period}</p>
+            <h3 class="mt-0.5 font-[family-name:var(--font-mincho)] text-lg text-ink">{entry.heading}</h3>
+            <p class="mt-1 text-sm leading-relaxed text-ink-soft">{entry.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</Layout>

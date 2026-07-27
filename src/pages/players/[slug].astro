@@ -1,0 +1,42 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PlayerStatsTabs from '../../components/PlayerStatsTabs.astro';
+import PlayerAvatar from '../../components/PlayerAvatar.astro';
+import { players } from '../../lib/players';
+
+export function getStaticPaths() {
+  return players.map((player) => ({
+    params: { slug: player.slug },
+    props: { player },
+  }));
+}
+
+const { player } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const roleLabel = player.role === 'batter' ? '野手' : '投手';
+---
+
+<Layout title={`${player.name}｜ドラゴンズ手帳`}>
+  <a href={`${base}players/`} class="mb-4 inline-block text-sm text-blue-accent hover:underline">← 選手一覧に戻る</a>
+
+  <header class="mb-6 flex items-center gap-4">
+    <PlayerAvatar name={player.name} role={player.role} />
+    <div>
+      <h1 class="font-[family-name:var(--font-mincho)] text-2xl text-navy-900 sm:text-3xl">{player.name}</h1>
+      <div class="mt-1 flex gap-2">
+        <span
+          class={`inline-block rounded-full px-3 py-1 text-xs text-paper ${
+            player.role === 'pitcher' ? 'bg-call-red' : 'bg-navy-800'
+          }`}
+        >
+          {roleLabel}
+        </span>
+        <span class="inline-block rounded-full border border-card-border px-3 py-1 text-xs text-ink-soft">
+          {player.level}
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <PlayerStatsTabs player={player} />
+</Layout>
