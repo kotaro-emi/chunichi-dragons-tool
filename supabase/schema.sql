@@ -16,12 +16,15 @@ create table if not exists public.profiles (
 
 alter table public.profiles enable row level security;
 
+drop policy if exists "profiles_select_all" on public.profiles;
 create policy "profiles_select_all" on public.profiles
   for select using (true);
 
+drop policy if exists "profiles_insert_own" on public.profiles;
 create policy "profiles_insert_own" on public.profiles
   for insert with check (auth.uid() = id);
 
+drop policy if exists "profiles_update_own" on public.profiles;
 create policy "profiles_update_own" on public.profiles
   for update using (auth.uid() = id);
 
@@ -56,12 +59,15 @@ create table if not exists public.favorites (
 
 alter table public.favorites enable row level security;
 
+drop policy if exists "favorites_select_own" on public.favorites;
 create policy "favorites_select_own" on public.favorites
   for select using (auth.uid() = user_id);
 
+drop policy if exists "favorites_insert_own" on public.favorites;
 create policy "favorites_insert_own" on public.favorites
   for insert with check (auth.uid() = user_id);
 
+drop policy if exists "favorites_delete_own" on public.favorites;
 create policy "favorites_delete_own" on public.favorites
   for delete using (auth.uid() = user_id);
 
@@ -80,15 +86,19 @@ create table if not exists public.comments (
 
 alter table public.comments enable row level security;
 
+drop policy if exists "comments_select_all" on public.comments;
 create policy "comments_select_all" on public.comments
   for select using (true);
 
+drop policy if exists "comments_insert_own" on public.comments;
 create policy "comments_insert_own" on public.comments
   for insert with check (auth.uid() = user_id);
 
+drop policy if exists "comments_update_own" on public.comments;
 create policy "comments_update_own" on public.comments
   for update using (auth.uid() = user_id);
 
+drop policy if exists "comments_delete_own" on public.comments;
 create policy "comments_delete_own" on public.comments
   for delete using (auth.uid() = user_id);
 
@@ -115,6 +125,7 @@ create table if not exists public.game_scores (
 
 alter table public.game_scores enable row level security;
 
+drop policy if exists "game_scores_select_all" on public.game_scores;
 create policy "game_scores_select_all" on public.game_scores
   for select using (true);
 
