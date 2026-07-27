@@ -1,0 +1,47 @@
+name: Deploy to GitHub Pages
+
+# masterへのpush、または手動実行（Actionsタブから）で動く。
+# buildジョブはどのブランチへのpushでも走らせて「ビルドが壊れていないか」を確認できるようにし、
+# 実際に公開サイトを書き換えるdeployジョブはmasterブランチのときだけ実行する
+# （開発計画書2.5節：フィーチャーブランチでビルド失敗を試しても本番サイトには影響しない設計）
+on:
+  push:
+    branches: ['**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # TODO(Phase 2): data/*.json を追加したら、ここでJSONの形式チェック
+      # （例: 各ファイルを `node -e "JSON.parse(require('fs').readFileSync(...))"` で検証）
+      # を挟み、壊れたデータがビルド失敗の原因になった際にわかりやすくする（開発計画書2.5節）
+
+      - name: Install, build, and upload site
+        uses: withastro/action@v3
+        with:
+          node-version: 22
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
