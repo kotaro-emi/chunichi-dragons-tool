@@ -1,31 +1,36 @@
 # AI中日 (中日ドラゴンズなんでもツール)
 
 ## プロジェクト概要
-中日ドラゴンズファン向けの「なんでもツール」。試合結果・速報、選手成績データ、ニュース/トレード情報のまとめなどを扱うWebアプリを目指す。
+中日ドラゴンズファン向けの「なんでもツール」。球団の歴史、チーム/個人成績、選手経歴、応援歌、選手の特徴、補強ポイント分析、試合結果・速報などを扱うWebアプリ「ドラゴンズ手帳」を目指す。開発計画の全体像は `アプリ開発計画書.md` を参照。
 
-現状はプロジェクト初期段階。資料（中日ドラゴンズの歴史.txt / .pptx）に加え、打者成績まとめページ（中日打者成績.html）を実装済み。本格的なNext.jsアプリはこれから。
+Astro（静的サイト書き出し）+ GitHub Actions + GitHub Pagesへ移行済み（Phase 0）。Phase 1でTailwind CSSベースのデザインモック（`/mock/` 配下）を作成し、Phase 2で実データの `data/*.json` への移行を行った。以前の自己完結HTML3枚（`中日打者成績.html` 等）は `public/` 配下にそのまま残し、移行前の本番表示を壊さないための保険として当面維持する（Astro側の実ページが揃ったら順次役目を終える）。
 
 ## 技術スタック
-- フロントエンド/全体: React (Next.js) ※本格実装は未着手
-- 現状の打者成績ページ本体は `中日打者成績.html`。Next.js 化前のつなぎとして、外部ライブラリなしの自己完結HTMLで実装
-- `index.html` は中身を持たず、GitHub PagesのルートURLを `中日打者成績.html` へ自動転送するだけの中継ページ。自動更新ルーティンもこのファイルは編集しない
+- Astro（静的サイト書き出し）+ Tailwind CSS v4
+- GitHub Actions（`.github/workflows/deploy.yml`）でビルド→GitHub Pagesへデプロイ。ビルドは全ブランチのpushで実行、デプロイは`master`のみ
 - リポジトリ: https://github.com/kotaro-emi/chunichi-dragons-tool (public)
-- 公開先: GitHub Pages https://kotaro-emi.github.io/chunichi-dragons-tool/ (masterブランチ/ルートから配信、index.html経由で中日打者成績.htmlへ転送)
-- その他の構成（DB、APIなど）は未定。決まり次第このファイルを更新する。
+- 公開先: GitHub Pages https://kotaro-emi.github.io/chunichi-dragons-tool/ (masterブランチ、Actions経由でビルド・デプロイ)
+- データはコード内JSON（`data/players.json` / `data/history.json`）。DB・Supabase等は計画書のPhase 5以降で導入予定、現時点では未導入
 
 ## 想定機能
-- 試合結果・速報の取得
-- 選手・成績データの表示（打者成績: 実装済み、投手成績: 未実装）
-- ニュース・トレード情報のまとめ
-- （その他、追加検討中）
+- 試合結果・速報の取得（計画書3.6節、Supabase導入後に実装予定）
+- 選手・成績データの表示（打者成績・守備成績・投手成績: `data/players.json`に実データ移行済み、実ページ実装はPhase 3で対応）
+- 球団の歴史（`data/history.json`に実データ移行済み、実ページ実装はPhase 3で対応）
+- 選手別応援歌（`data/players.json`の各選手`cheerSong`に実データ移行済み）
+- 補強ポイントAI分析（計画書Phase 4）
+- 訪問者アカウント（お気に入り・コメント、計画書Phase 7）
 
 ## データソース
-- 打者成績: NPB公式サイト https://npb.jp/bis/{年度}/stats/idb1_d.html （中日ドラゴンズ個人打撃成績）をスクレイピングして取得
+- 打撃成績: https://npb.jp/bis/{年度}/stats/idb1_d.html （中日ドラゴンズ個人打撃成績）
+- 投手成績: https://npb.jp/bis/{年度}/stats/idp1_d.html （中日ドラゴンズ個人投手成績）
+- 守備成績: https://npb.jp/bis/{年度}/stats/idf1_d.html （中日ドラゴンズ個人守備成績、ポジションごとに複数テーブル）
+- 応援歌: `中日ドラゴンズ選手別応援歌辞典.html`の内容を移行（出典は同ファイルのfooter参照。著作権配慮のため歌詞は抜粋のみ）
+- 球団の歴史: `中日ドラゴンズの歴史.txt`の内容を移行
 - その他のデータソース（ニュース等）は未定。スクレイピング/API利用時は各サイトの利用規約に従うこと。
+- **未整備**: 選手プロフィール（生年月日・身長体重・ドラフト年度等の経歴情報）は上記のどのソースにも含まれておらず、`data/players.json`にはまだ存在しない。追加するデータソース（NPB選手個別ページ等）は未定、Phase 3着手時に方針を決める。二軍選手の実データも同様に未着手（`/mock/`内の今井蓮は二軍表示確認用の架空選手）。
 
 ## 自動更新の仕組み
-- claude.ai のスケジュール実行クラウドエージェント（ルーティン）が、試合終了後の時間帯に1日1回 `https://npb.jp/bis/{年度}/stats/idb1_d.html` から最新の打撃成績を取得し、`中日打者成績.html` 内の `PLAYERS` 配列と「最終更新」表示を書き換えて `master` ブランチにコミット・pushする。
-- 管理: https://claude.ai/code/routines （ルーティンの一覧・停止はここから行う。このリポジトリのCLAUDE.mdからは削除できない）
+- claude.ai のスケジュール実行クラウドエージェント（ルーティン）が、試合終了後の時間帯に1日1回 `data/players.json` を書き換えて `master` ブランチにコミット・pushする想定（打撃・守備・投手成績を対象。応援歌・経歴は変化頻度が低いため低頻度更新でよい）。**現時点でこのルーティンは旧`中日打者成績.html`のPLAYERS配列を書き換える設定のままなので、`data/players.json`を書き換えるように更新が必要**（管理: https://claude.ai/code/routines 、このリポジトリのCLAUDE.mdからは変更できない）。
 - ローカルの最新化は `git pull` するか、GitHub Pages URL をブラウザで開けば常に最新が見られる。
 
 ## 開発上の注意
