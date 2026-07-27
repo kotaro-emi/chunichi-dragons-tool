@@ -2,3 +2,14 @@
 .next/
 .env*
 
+# Astro build output / generated types
+dist/
+.astro/
+
+# logs
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+.idea/
+
